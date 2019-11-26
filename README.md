@@ -1,2 +1,3 @@
-# santa-bucket
-Santa Bucket API
+# Santa Bucket API
+
+Don't hesitate to ask him everything you want!

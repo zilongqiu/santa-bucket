@@ -1,0 +1,63 @@
+version: '3'
+services:
+  webapp:
+    build: .
+    container_name: webapp
+    volumes:
+      - .:/var/www
+      - /root/.ssh:/root/.ssh
+    links:
+      - nginx
+    tty: true
+
+  mysql:
+    image: mysql:5.7
+    container_name: zstack-mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - ../db_data:/var/lib/mysql
+    command: mysqld --sql_mode="ERROR_FOR_DIVISION_BY_ZERO"
+    restart: always
+    environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: dbname
+       MYSQL_USER: root
+       MYSQL_PASSWORD:
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: zstack-phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - 8081:80
+    volumes:
+      - /sessions
+
+  phpfpm:
+    build: docker/phpfpm
+    container_name: zstack-phpfpm
+    ports:
+      - 9000:9000
+    volumes:
+      - .:/var/www
+    environment:
+      - XDEBUG_CONFIG=remote_host=172.17.0.1
+      - PHP_IDE_CONFIG=serverName=localhost
+      - ./docker/phpfpm/log/error.log:/var/log/error.log
+
+  nginx:
+    build: docker/nginx
+    container_name: zstack-nginx
+    ports:
+      - 80:80
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/log:/var/log/nginx
+    links:
+      - phpfpm
+      - mysql
