@@ -12,7 +12,7 @@ services:
 
   mysql:
     image: mysql:5.7
-    container_name: mysql
+    container_name: zstack-mysql
     ports:
       - 3307:3306
     command: mysqld --sql_mode="ERROR_FOR_DIVISION_BY_ZERO"
