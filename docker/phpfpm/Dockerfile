@@ -36,4 +36,6 @@ RUN mv /root/.symfony/bin/symfony /bin/
 RUN chown -R www-data:www-data /var/www \
  && chmod -R 777 /var/www
 
+# General
+USER www-data
 WORKDIR /var/www
