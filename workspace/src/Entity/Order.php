@@ -5,6 +5,12 @@ namespace App\Entity;
 use App\Entity\Traits\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Class Order
+ *
+ * @ORM\Table(name="order")
+ * @ORM\Entity()
+ */
 class Order implements OrderInterface
 {
     use Timestampable;

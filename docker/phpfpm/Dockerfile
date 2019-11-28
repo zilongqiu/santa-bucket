@@ -38,4 +38,4 @@ RUN chown -R www-data:www-data /var/www \
 
 # General
 USER www-data
-WORKDIR /var/www
+WORKDIR /var/www/workspace

@@ -6,8 +6,10 @@ services:
     volumes:
       - .:/var/www
       - /root/.ssh:/root/.ssh
+    working_dir: /var/www/
     links:
       - nginx
+      - mysql
     tty: true
 
   mysql:
@@ -18,10 +20,10 @@ services:
     command: mysqld --sql_mode="ERROR_FOR_DIVISION_BY_ZERO"
     restart: always
     environment:
-       MYSQL_ROOT_PASSWORD: noGiftFor$ou2
-       MYSQL_DATABASE: santa-bucket
-       MYSQL_USER: santa
-       MYSQL_PASSWORD: santa
+       MYSQL_ROOT_PASSWORD: my_secret
+       MYSQL_DATABASE: santa
+       MYSQL_USER: santa_user
+       MYSQL_PASSWORD: santa_password
 
   phpfpm:
     build: docker/phpfpm
@@ -34,6 +36,7 @@ services:
       - XDEBUG_CONFIG=remote_host=172.17.0.1
       - PHP_IDE_CONFIG=serverName=localhost
       - ./docker/phpfpm/log/error.log:/var/log/error.log
+    env_file: vars.env
 
   nginx:
     build: docker/nginx
@@ -45,4 +48,3 @@ services:
       - ./docker/nginx/log:/var/log/nginx
     links:
       - phpfpm
-      - mysql
