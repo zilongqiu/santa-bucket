@@ -1,13 +1,5 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
-
 app.swagger_ui:
   path: /api/doc
   methods: GET
   defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
 
-rest_controller:
-  resource: ../src/Controller/
-  type: annotation
-  prefix: /
