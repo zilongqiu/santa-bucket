@@ -7,3 +7,7 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> php-cs-fixer ###
+.php_cs.cache
+###< php-cs-fixer ###

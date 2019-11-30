@@ -21,7 +21,6 @@ RUN echo "xdebug.default_enable = on" >> ${XDEBUG_INI} \
 # Add configs
 ENV TZ=Europe/Paris
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 COPY /config/php.ini /usr/local/etc/php/php.ini
 
 # Install Composer
@@ -31,6 +30,12 @@ RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-d
 # Install Symfony command
 RUN wget https://get.symfony.com/cli/installer -O - | bash
 RUN mv /root/.symfony/bin/symfony /bin/
+
+# Install php-cs-fixer
+
+RUN curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer \
+    && chmod a+x php-cs-fixer \
+    && mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
 # Define rights
 RUN chown -R www-data:www-data /var/www \

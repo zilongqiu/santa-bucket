@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 trait Timestampable
 {
     /**
-     * @var \DateTime $createdAt
+     * @var \DateTime
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
@@ -15,16 +15,13 @@ trait Timestampable
     private $createdAt;
 
     /**
-     * @var \DateTime $updatedAt
+     * @var \DateTime
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
@@ -42,17 +39,12 @@ trait Timestampable
         return $this;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param \DateTime|null $updatedAt
-     *
      * @return self
      */
     public function setUpdatedAt(?\DateTime $updatedAt)

@@ -3,14 +3,12 @@
 namespace App\Entity;
 
 /**
- * Interface OrderInterface
+ * Interface OrderInterface.
  */
 interface OrderInterface
 {
     /**
-     * Return the order's id
-     *
-     * @return int
+     * Return the order's id.
      */
     public function getId(): int;
 }

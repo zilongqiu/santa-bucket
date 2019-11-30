@@ -6,7 +6,7 @@ use App\Entity\Traits\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Order
+ * Class Order.
  *
  * @ORM\Table(name="order")
  * @ORM\Entity()
@@ -53,40 +53,32 @@ class Order implements OrderInterface
     protected $destinationLongitude;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer")
      */
     protected $distance;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="smallint")
      */
     protected $status;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return float
-     */
     public function getOriginLatitude(): float
     {
         return $this->originLatitude;
     }
 
-    /**
-     * @param float $originLatitude
-     *
-     * @return self
-     */
     public function setOriginLatitude(float $originLatitude): self
     {
         $this->originLatitude = $originLatitude;
@@ -94,19 +86,11 @@ class Order implements OrderInterface
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getOriginLongitude(): float
     {
         return $this->originLongitude;
     }
 
-    /**
-     * @param float $originLongitude
-     *
-     * @return self
-     */
     public function setOriginLongitude(float $originLongitude): self
     {
         $this->originLongitude = $originLongitude;
@@ -114,19 +98,11 @@ class Order implements OrderInterface
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getDestinationLatitude(): float
     {
         return $this->destinationLatitude;
     }
 
-    /**
-     * @param float $destinationLatitude
-     *
-     * @return self
-     */
     public function setDestinationLatitude(float $destinationLatitude): self
     {
         $this->destinationLatitude = $destinationLatitude;
@@ -134,19 +110,11 @@ class Order implements OrderInterface
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getDestinationLongitude(): float
     {
         return $this->destinationLongitude;
     }
 
-    /**
-     * @param float $destinationLongitude
-     *
-     * @return self
-     */
     public function setDestinationLongitude(float $destinationLongitude): self
     {
         $this->destinationLongitude = $destinationLongitude;
@@ -154,19 +122,11 @@ class Order implements OrderInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getDistance(): int
     {
         return $this->distance;
     }
 
-    /**
-     * @param int $distance
-     *
-     * @return self
-     */
     public function setDistance(int $distance): self
     {
         $this->distance = $distance;
@@ -174,19 +134,11 @@ class Order implements OrderInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getStatus(): int
     {
         return $this->status;
     }
 
-    /**
-     * @param int $status
-     *
-     * @return self
-     */
     public function setStatus(int $status): self
     {
         $this->status = $status;
