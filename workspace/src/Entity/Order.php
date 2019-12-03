@@ -3,17 +3,28 @@
 namespace App\Entity;
 
 use App\Entity\Traits\Timestampable;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Order.
  *
- * @ORM\Table(name="order")
- * @ORM\Entity()
+ * @ORM\Table(name="`order`")
+ * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
+ *
+ * @JMS\AccessorOrder("custom", custom = {"id", "distance", "status"})
  */
 class Order implements OrderInterface
 {
     use Timestampable;
+
+    const STATUS_UNASSIGNED = 1;
+    const STATUS_TAKEN = 2;
+
+    const STATUS_UNASSIGNED_LABEL = 'UNASSIGNED';
+    const STATUS_TAKEN_LABEL = 'TAKEN';
 
     /**
      * @var int
@@ -21,41 +32,35 @@ class Order implements OrderInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     *
+     * @JMS\Groups({"list", "post"})
      */
     protected $id;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(type="decimal", precision=10, scale=8)
+     * @AppAssert\Geolocation()
+     * @Assert\NotNull()
+     * @ORM\Column(type="string", length=25)
      */
-    protected $originLatitude;
+    protected $originGeolocation;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(type="decimal", precision=11, scale=8)
+     * @AppAssert\Geolocation()
+     * @Assert\NotNull()
+     * @ORM\Column(type="string", length=25)
      */
-    protected $originLongitude;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(type="decimal", precision=10, scale=8)
-     */
-    protected $destinationLatitude;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(type="decimal", precision=11, scale=8)
-     */
-    protected $destinationLongitude;
+    protected $destinationGeolocation;
 
     /**
      * @var int
      *
      * @ORM\Column(type="integer")
+     *
+     * @JMS\Groups({"list", "post"})
      */
     protected $distance;
 
@@ -66,6 +71,11 @@ class Order implements OrderInterface
      */
     protected $status;
 
+    public function __construct()
+    {
+        $this->status = self::STATUS_UNASSIGNED;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -74,59 +84,53 @@ class Order implements OrderInterface
         return $this->id;
     }
 
-    public function getOriginLatitude(): float
+    /**
+     * {@inheritdoc}
+     */
+    public function getOriginGeolocation(): ?string
     {
-        return $this->originLatitude;
+        return $this->originGeolocation;
     }
 
-    public function setOriginLatitude(float $originLatitude): self
+    /**
+     * {@inheritdoc}
+     */
+    public function setOriginGeolocation(string $originGeolocation): self
     {
-        $this->originLatitude = $originLatitude;
+        $this->originGeolocation = $originGeolocation;
 
         return $this;
     }
 
-    public function getOriginLongitude(): float
+    /**
+     * {@inheritdoc}
+     */
+    public function getDestinationGeolocation(): ?string
     {
-        return $this->originLongitude;
+        return $this->destinationGeolocation;
     }
 
-    public function setOriginLongitude(float $originLongitude): self
+    /**
+     * {@inheritdoc}
+     */
+    public function setDestinationGeolocation(string $destinationGeolocation): self
     {
-        $this->originLongitude = $originLongitude;
+        $this->destinationGeolocation = $destinationGeolocation;
 
         return $this;
     }
 
-    public function getDestinationLatitude(): float
-    {
-        return $this->destinationLatitude;
-    }
-
-    public function setDestinationLatitude(float $destinationLatitude): self
-    {
-        $this->destinationLatitude = $destinationLatitude;
-
-        return $this;
-    }
-
-    public function getDestinationLongitude(): float
-    {
-        return $this->destinationLongitude;
-    }
-
-    public function setDestinationLongitude(float $destinationLongitude): self
-    {
-        $this->destinationLongitude = $destinationLongitude;
-
-        return $this;
-    }
-
-    public function getDistance(): int
+    /**
+     * {@inheritdoc}
+     */
+    public function getDistance(): ?int
     {
         return $this->distance;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDistance(int $distance): self
     {
         $this->distance = $distance;
@@ -134,15 +138,39 @@ class Order implements OrderInterface
         return $this;
     }
 
-    public function getStatus(): int
+    /**
+     * {@inheritdoc}
+     */
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
-    public function setStatus(int $status): self
+    /**
+     * {@inheritdoc}
+     */
+    public function setStatus(?int $status): self
     {
         $this->status = $status;
 
         return $this;
+    }
+
+    public static function getStatuses(): array
+    {
+        return [
+            self::STATUS_UNASSIGNED => self::STATUS_UNASSIGNED_LABEL,
+            self::STATUS_TAKEN => self::STATUS_TAKEN_LABEL,
+        ];
+    }
+
+    /**
+     * @JMS\Groups({"list", "post", "patch"})
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("status")
+     */
+    public function getStatusLabel(): string
+    {
+        return self::getStatuses()[$this->getStatus()] ?? self::STATUS_UNASSIGNED_LABEL;
     }
 }

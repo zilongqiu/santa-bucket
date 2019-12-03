@@ -4,8 +4,9 @@ Don't hesitate to ask him everything you want!
 
 ## Startup
 
-1. Simply execute the script `bash ./start.sh` and wait for the services to be started (described bellow in the section `Docker services`)
-2. Congratulations! :tada: The API is accessible at `http://localhost:8080/`.
+1. Replace `MY_KEY` value of `GOOGLE_API_KEY=MY_KEY` in the file located at `workspace/.env` (Attention: no white space allowed)
+2. Simply execute the script `bash ./start.sh` and wait for the services to be started (described bellow in the section `Docker services`)
+3. Congratulations! :tada: The API is accessible at `http://localhost:8080/`.
 
 ## Documentation
 

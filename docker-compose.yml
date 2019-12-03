@@ -17,7 +17,7 @@ services:
     container_name: zstack-mysql
     ports:
       - 3307:3306
-    command: mysqld --sql_mode="ERROR_FOR_DIVISION_BY_ZERO"
+    command: mysqld --sql_mode="ERROR_FOR_DIVISION_BY_ZERO" --innodb_lock_wait_timeout=1
     restart: always
     environment:
        MYSQL_ROOT_PASSWORD: my_secret
