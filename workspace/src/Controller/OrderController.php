@@ -11,9 +11,7 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Knp\Component\Pager\PaginatorInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,17 +40,6 @@ class OrderController extends AbstractFOSRestController
      * Place an order.
      *
      * @Rest\Post("/orders")
-     * @SWG\Response(
-     *     response=Response::HTTP_OK,
-     *     description="Place an order",
-     *     @Model(type=Order::class, groups={"post"})
-     * )
-     * @SWG\Parameter(
-     *     name="form",
-     *     in="body",
-     *     description="Order form",
-     *     @Model(type=OrderType::class)
-     * )
      */
     public function placeOrder(Request $request): View
     {
@@ -77,23 +64,6 @@ class OrderController extends AbstractFOSRestController
      *
      * @Rest\Patch("/orders/{id}")
      * @ParamConverter("order", class="App\Entity\Order")
-     * @SWG\Response(
-     *     response=Response::HTTP_OK,
-     *     description="Take an order",
-     *     @Model(type=Order::class, groups={"patch"})
-     * )
-     * @SWG\Parameter(
-     *     name="orderId",
-     *     in="path",
-     *     type="integer",
-     *     description="Order's id"
-     * )
-     * @SWG\Parameter(
-     *     name="form",
-     *     in="body",
-     *     description="Order form",
-     *     @Model(type=OrderType::class)
-     * )
      */
     public function takeOrder(Request $request, Order $order): View
     {
@@ -117,16 +87,6 @@ class OrderController extends AbstractFOSRestController
      * List orders.
      *
      * @Rest\Get("/orders")
-     * @SWG\Response(
-     *     response=Response::HTTP_OK,
-     *     description="List orders",
-     *     @SWG\Schema(
-     *          type="array",
-     *          @SWG\Items(
-     *              @Model(type=Order::class)
-     *          )
-     *     )
-     * )
      */
     public function getOrders(OrderRepository $repository, Request $request, PaginatorInterface $paginator): View
     {

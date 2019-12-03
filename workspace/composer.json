@@ -13,7 +13,6 @@
         "gedmo/doctrine-extensions": "^2.4",
         "jms/serializer-bundle": "^3.4",
         "knplabs/knp-paginator-bundle": "^5.0",
-        "nelmio/api-doc-bundle": "^v3.5",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/asset": "4.4.*",
         "symfony/console": "4.4.*",

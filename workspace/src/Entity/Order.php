@@ -168,6 +168,7 @@ class Order implements OrderInterface
      * @JMS\Groups({"list", "post", "patch"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("status")
+     * @JMS\Type("string")
      */
     public function getStatusLabel(): string
     {
