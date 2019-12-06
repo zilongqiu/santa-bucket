@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Fix folder right
+sudo chown -R www-data:www-data $(pwd)
+sudo chmod -R 777 $(pwd)
+
 # Start services
 docker-compose up -d --force-recreate -V
 
