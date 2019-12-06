@@ -8,6 +8,8 @@ use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 
 /**
  * Class CustomExceptionController.
+ *
+ * @codeCoverageIgnore
  */
 class CustomExceptionController
 {

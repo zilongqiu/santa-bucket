@@ -14,8 +14,7 @@ class GeolocationValidator extends ConstraintValidator
      * Function validate.
      *
      * @param mixed
-     * @param \Symfony\Component\Validator\Constraint
-     * @param mixed $value
+     * @param Constraint
      */
     public function validate($value, Constraint $constraint)
     {

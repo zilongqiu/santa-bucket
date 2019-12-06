@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start services
-docker-compose up -d --force-recreate
+docker-compose up -d --force-recreate -V
 
 # Initialize project
 docker-compose exec phpfpm composer self-update --no-interaction
