@@ -25,8 +25,7 @@
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^5.0",
-        "symfony/profiler-pack": "^1.0"
+        "symfony/phpunit-bridge": "^5.0"
     },
     "config": {
         "preferred-install": {
