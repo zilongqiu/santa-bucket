@@ -28,7 +28,7 @@ class GoogleClient
     }
 
     /**
-     * Get driving distance between two geolocation (in meters)
+     * Get driving distance between two geolocation (in meters).
      */
     public function getDistanceInMeters(string $originGeolocation, string $destinationGeolocation): int
     {

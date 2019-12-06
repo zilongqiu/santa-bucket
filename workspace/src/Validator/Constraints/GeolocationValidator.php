@@ -15,6 +15,7 @@ class GeolocationValidator extends ConstraintValidator
      *
      * @param mixed
      * @param Constraint
+     * @param mixed $value
      */
     public function validate($value, Constraint $constraint)
     {
