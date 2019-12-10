@@ -8,6 +8,10 @@ Don't hesitate to ask him everything you want!
 2. Simply execute the script `bash ./start.sh` and wait for the services to be started (described bellow in the section `Docker services`)
 3. Congratulations! :tada: The API is accessible at `http://localhost:8080/`.
 
+## API Documentation
+
+A documentation of the API is available at `http://localhost:8080/api/doc`.
+
 ## Docker services
 
 | Image | Version | Port | Name  | Description |

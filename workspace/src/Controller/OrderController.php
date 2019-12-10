@@ -11,7 +11,9 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Knp\Component\Pager\PaginatorInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +42,36 @@ class OrderController extends AbstractFOSRestController
      * Place an order.
      *
      * @Rest\Post("/orders")
+     * @SWG\Response(
+     *     response=Response::HTTP_OK,
+     *     description="Place an order",
+     *     @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="id", type="integer", example=1),
+     *          @SWG\Property(property="distance", type="integer", example=21538, description="Distance between origin and destination in meters"),
+     *          @SWG\Property(property="status", type="string", example="UNASSIGNED"),
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=Response::HTTP_BAD_REQUEST,
+     *     description="Place an order failure",
+     *     @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="error", type="string", example="ERROR_DESCRIPTION"),
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Order form JSON Payload",
+     *     required=true,
+     *     format="application/json",
+     *     @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="origin", type="array", @SWG\Items(type="string")),
+     *          @SWG\Property(property="destination", type="array", @SWG\Items(type="string"))
+     *     )
+     * )
      */
     public function placeOrder(Request $request): View
     {
@@ -64,6 +96,47 @@ class OrderController extends AbstractFOSRestController
      *
      * @Rest\Patch("/orders/{id}")
      * @ParamConverter("order", class="App\Entity\Order")
+     * @SWG\Response(
+     *     response=Response::HTTP_OK,
+     *     description="Take an order success",
+     *     @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="status", type="string", example="SUCCESS"),
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=Response::HTTP_NOT_FOUND,
+     *     description="Order not found failure",
+     *     @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="error", type="string", example="Not found"),
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=Response::HTTP_BAD_REQUEST,
+     *     description="Take an order failure",
+     *     @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="error", type="string", example="ERROR_DESCRIPTION"),
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="integer",
+     *     description="Order's id"
+     * )
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Order form JSON Payload",
+     *     required=true,
+     *     format="application/json",
+     *     @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="status", type="string", example="TAKEN"),
+     *     )
+     * )
      */
     public function takeOrder(Request $request, Order $order): View
     {
@@ -76,7 +149,7 @@ class OrderController extends AbstractFOSRestController
 
                 return View::create($this->getFormattedMessage('status', self::STATUS_SUCCESS), Response::HTTP_OK);
             } catch (\Exception $e) {
-                return View::create($this->getFormattedMessage('error', 'An order can only be taken once.'), Response::HTTP_CONFLICT);
+                return View::create($this->getFormattedMessage('error', 'An order can only be taken once.'), Response::HTTP_BAD_REQUEST);
             }
         }
 
@@ -87,6 +160,36 @@ class OrderController extends AbstractFOSRestController
      * List orders.
      *
      * @Rest\Get("/orders")
+     * @SWG\Response(
+     *     response=Response::HTTP_OK,
+     *     description="List orders",
+     *     @SWG\Schema(
+     *          type="array",
+     *          @SWG\Items(ref=@Model(type=Order::class, groups={"list"}))
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=Response::HTTP_BAD_REQUEST,
+     *     description="List orders failure",
+     *     @SWG\Schema(
+     *          type="object",
+     *          @SWG\Property(property="error", type="string", example="ERROR_DESCRIPTION"),
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="page",
+     *     in="path",
+     *     type="integer",
+     *     description="Page number",
+     *     default=1
+     * )
+     * @SWG\Parameter(
+     *     name="limit",
+     *     in="path",
+     *     type="integer",
+     *     description="Number of element per page",
+     *     default=10,
+     * )
      */
     public function getOrders(OrderRepository $repository, Request $request, PaginatorInterface $paginator): View
     {
@@ -96,14 +199,14 @@ class OrderController extends AbstractFOSRestController
                 $request->query->getInt('page', 1),
                 $request->query->getInt('limit', 10)
             );
+
+            return View::create($pagination->getItems(), Response::HTTP_OK)
+                ->setContext((new Context())->addGroups([
+                    'list',
+                ]));
         } catch (\Exception $e) {
             return View::create($this->getFormattedMessage('error', $e->getMessage()), Response::HTTP_BAD_REQUEST);
         }
-
-        return View::create($pagination->getItems(), Response::HTTP_OK)
-            ->setContext((new Context())->addGroups([
-                'list',
-            ]));
     }
 
     private function getFormErrorsView(FormInterface $form, int $statusCode): View
