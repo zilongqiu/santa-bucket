@@ -16,3 +16,13 @@ Don't hesitate to ask him everything you want!
 | **mysql** | 5.7 | 3307 | mysql | *Root password: my_secret<br />DB name: santa<br />Username: santa_user<br />Password: santa_password* |
 | **phpfpm** | 7.3-fpm | 9001 | phpfpm | Custom phpfpm configuration for the project |
 | **nginx** | 1.15 | 8080 | nginx | Custom nginx configuration for the project |
+
+## Unit tests
+
+PHPUnit is not installed by default (because of prod env). You need to first install it before to run it.
+In order to run unit tests, simply run these commands:
+
+```
+docker-compose exec phpfpm composer install --dev
+docker-compose exec phpfpm ./bin/phpunit
+```
