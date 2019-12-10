@@ -5,7 +5,6 @@ services:
     container_name: webapp
     volumes:
       - .:/var/www
-      - /root/.ssh:/root/.ssh
     working_dir: /var/www/
     links:
       - nginx
