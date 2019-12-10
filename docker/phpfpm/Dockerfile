@@ -11,12 +11,12 @@ RUN apt-get update \
 RUN docker-php-ext-install zip pdo_mysql mbstring opcache
 
 # Install xdebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-ARG XDEBUG_INI=/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo "xdebug.default_enable = on" >> ${XDEBUG_INI} \
-    && echo "xdebug.remote_enable = on" >> ${XDEBUG_INI} \
-    && echo "xdebug.remote_autostart = off" >> ${XDEBUG_INI}
+#RUN pecl install xdebug \
+#    && docker-php-ext-enable xdebug
+#ARG XDEBUG_INI=/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+#RUN echo "xdebug.default_enable = on" >> ${XDEBUG_INI} \
+#    && echo "xdebug.remote_enable = on" >> ${XDEBUG_INI} \
+#    && echo "xdebug.remote_autostart = off" >> ${XDEBUG_INI}
 
 # Add configs
 ENV TZ=Europe/Paris
@@ -32,7 +32,6 @@ RUN wget https://get.symfony.com/cli/installer -O - | bash
 RUN mv /root/.symfony/bin/symfony /bin/
 
 # Install php-cs-fixer
-
 RUN curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer \
     && chmod a+x php-cs-fixer \
     && mv php-cs-fixer /usr/local/bin/php-cs-fixer
